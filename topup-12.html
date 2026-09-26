@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Fire Top-Up</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#0b1020;color:#fff}
+.wrap{max-width:480px;margin:auto;min-height:100vh;background:#11182d}
+header{padding:22px 18px;text-align:center;background:linear-gradient(135deg,#ff7a00,#ff1744)}
+header h1{margin:0;font-size:28px}header p{margin:7px 0 0;opacity:.9}
+.card{margin:16px;padding:18px;background:#18213a;border-radius:16px;box-shadow:0 8px 25px #0004}
+label{display:block;margin:12px 0 7px;font-weight:bold}
+input,select{width:100%;padding:13px;border:1px solid #33405f;border-radius:10px;background:#0d1427;color:#fff;font-size:16px}
+.packages{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.pkg{padding:14px;border:2px solid #2e3a58;border-radius:12px;text-align:center;cursor:pointer;background:#10182c}
+.pkg.active{border-color:#ff7a00;background:#2a1b13}.diamond{font-size:20px;font-weight:bold}.price{color:#ffd166;margin-top:5px}
+button{width:100%;border:0;border-radius:12px;padding:14px;margin-top:16px;font-size:17px;font-weight:bold;color:#fff;background:linear-gradient(90deg,#ff7a00,#ff1744);cursor:pointer}
+.note{font-size:13px;color:#aeb8d0;line-height:1.5}.success{display:none;padding:15px;margin-top:14px;border-radius:10px;background:#123d2b;color:#8ff0bd}
+footer{text-align:center;padding:20px;color:#7f8aa5;font-size:12px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+<h1>🔥 Free Fire Top-Up</h1>
+<p>দ্রুত ও সহজে আপনার Diamond Order করুন</p>
+</header>
+
+<div class="card">
+<label>Player UID</label>
+<input id="uid" type="number" placeholder="আপনার Free Fire UID লিখুন">
+
+<label>Diamond Package</label>
+<div class="packages">
+  <div class="pkg active" data-price="15" data-diamond="25💎"><div class="diamond">25💎</div><div class="price">৳15</div></div>
+  <div class="pkg" data-price="35" data-diamond="50💎"><div class="diamond">50💎</div><div class="price">৳35</div></div>
+  <div class="pkg" data-price="70" data-diamond="100💎"><div class="diamond">100💎</div><div class="price">৳70</div></div>
+  <div class="pkg" data-price="70" data-diamond="115💎"><div class="diamond">115💎</div><div class="price">৳70</div></div>
+  <div class="pkg" data-price="158" data-diamond="240💎"><div class="diamond">240💎</div><div class="price">৳158</div></div>
+  <div class="pkg" data-price="400" data-diamond="610💎"><div class="diamond">610💎</div><div class="price">৳400</div></div>
+  <div class="pkg" data-price="800" data-diamond="1240💎"><div class="diamond">1240💎</div><div class="price">৳800</div></div>
+  <div class="pkg" data-price="1610" data-diamond="2530💎"><div class="diamond">2530💎</div><div class="price">৳1610</div></div>
+  <div class="pkg" data-price="3220" data-diamond="5060💎"><div class="diamond">5060💎</div><div class="price">৳3220</div></div>
+  <div class="pkg" data-price="6440" data-diamond="10120💎"><div class="diamond">10120💎</div><div class="price">৳6440</div></div>
+</div><div class="price">৳15</div></div>
+  <div class="pkg" data-price="70" data-diamond="115💎"><div class="diamond">115💎</div><div class="price">৳70</div></div>
+  <div class="pkg" data-price="150" data-diamond="210💎"><div class="diamond">210💎</div><div class="price">৳150</div></div>
+</div><div class="price">৳20</div></div>
+  <div class="pkg" data-price="40" data-diamond="50💎"><div class="diamond">50💎</div><div class="price">৳40</div></div>
+  <div class="pkg" data-price="80" data-diamond="100💎"><div class="diamond">100💎</div><div class="price">৳80</div></div>
+  <div class="pkg" data-price="160" data-diamond="210💎"><div class="diamond">210💎</div><div class="price">৳160</div></div>
+</div>
+
+
+
+<label>Payment Method</label>
+<select id="payment">
+<option value="বিকাশ — 01829744665">বিকাশ — 01829744665</option>
+<option value="নগদ — 01827145309">নগদ — 01827145309</option>
+</select>
+
+<label>Transaction ID</label>
+<input id="trx" placeholder="পেমেন্ট করার পর TrxID লিখুন">
+
+<button type="button" id="verifyBtn">Verify</button>
+<button type="button" id="orderBtn">Order Now</button>
+<div class="success" id="verifyResult"></div>
+<div class="success" id="success"></div>
+
+</div>
+
+<footer>© 2026 Free Fire Top-Up Demo</footer>
+</div>
+
+<script>
+let selected={diamond:"25💎",price:15};
+let verified=false;
+document.querySelectorAll('.pkg').forEach(p=>{
+  p.addEventListener('click',()=>{
+    document.querySelectorAll('.pkg').forEach(x=>x.classList.remove('active'));
+    p.classList.add('active');
+    selected={diamond:p.dataset.diamond,price:p.dataset.price};
+  });
+});
+document.getElementById('verifyBtn').onclick=()=>{
+  const uid=document.getElementById('uid').value.trim();
+  const trx=document.getElementById('trx').value.trim();
+  const box=document.getElementById('verifyResult');
+  verified=false;
+  if(!uid){alert('Player UID দিন');return}
+  if(!trx){alert('Transaction ID দিন');return}
+  if(trx.length < 6){alert('সঠিক Transaction ID দিন');return}
+  box.style.display='block';
+  box.innerHTML='✅ Transaction ID গ্রহণ করা হয়েছে। বাস্তবে পেমেন্ট মিলিয়ে server থেকে verification করতে হবে।';
+  verified=true;
+};
+document.getElementById('orderBtn').onclick=()=>{
+  const uid=document.getElementById('uid').value.trim();
+  const trx=document.getElementById('trx').value.trim();
+  const payment=document.getElementById('payment').value;
+  const box=document.getElementById('success');
+  if(!verified){alert('আগে Verify করুন');return}
+  if(!uid){alert('Player UID দিন');return}
+  if(!trx){alert('Transaction ID দিন');return}
+  const order='FF'+Date.now().toString().slice(-8);
+  box.style.display='block';
+  box.innerHTML=`✅ Order তৈরি হয়েছে!<br>Order ID: <b>${order}</b><br>UID: <b>${uid}</b><br>Package: <b>${selected.diamond}</b><br>Payment: <b>${payment}</b><br>Amount: <b>৳${selected.price}</b>`;
+};
+</script>
+</body>
+</html>
